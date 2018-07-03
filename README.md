@@ -2,6 +2,12 @@
 
 ![index](index.jpg)
 
+## 参考情報
+
+- [GLSLのコンピュートシェーダーでGPUパーティクル](http://hmgmmsa.hatenablog.com/entry/2017/05/05/041200) : compute shader 内での index の取得の仕方についてまとめて下さっている。 `gl_GlobalInvocationID` とか。
+- [computeShaderParticlesExample](https://github.com/openframeworks/openFrameworks/tree/master/examples/gl/computeShaderParticlesExample) : example/gl/computeShaderParticlesExample. oFにおけるComputeShader と VBO の使い方の基本
+- [KinectStudy-Unity](https://github.com/sugi-cho/KinectStudy-Unity) : Unity の Compute Shader で Kinect のポイントクラウドを描いているサンプル。ロジック的にはこれに近い。
+
 ## 開発環境
 
 - Windows 10 x64
