@@ -54,6 +54,7 @@ private:
 	ofVbo vbo;
 
 	void setupKinect();
+	void setupComputeShader();
 	void getKinectData();
 	void getDepthData(IMultiSourceFrame* frame);
 	void getRgbData(IMultiSourceFrame* frame);
