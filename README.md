@@ -1,5 +1,7 @@
 ﻿# KinectSDK Point Cloud on oF
 
+![index](index.jpg)
+
 ## 開発環境
 
 - Windows 10 x64
@@ -35,3 +37,4 @@
 ## 既知の問題
 
 - カメラの初期位置が遠すぎる
+- Compute Shader での現地点(index) の取り方が謎。ネットの情報を鵜呑みにしてやっている。コメントアウトしている方の書き方にしても同じように描画される。
