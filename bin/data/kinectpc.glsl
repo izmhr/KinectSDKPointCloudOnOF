@@ -13,9 +13,9 @@ layout(std430, binding=2) buffer colorsResult {
 };
 
 uniform int CWIDTH;
-uniform int CHEIGHT;
-uniform int DWIDTH;
-uniform int DHEIGHT;
+//uniform int CHEIGHT;
+//uniform int DWIDTH;
+//uniform int DHEIGHT;
 
 layout(local_size_x = 8, local_size_y = 1, local_size_z = 1) in;
 void main() {

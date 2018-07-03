@@ -35,9 +35,9 @@ void ofApp::update() {
 
 	compute.begin();
 	compute.setUniform1i("CWIDTH", 1920);
-	compute.setUniform1i("CHEIGHT", 1080);
-	compute.setUniform1i("DWIDTH", 512);
-	compute.setUniform1i("DHEIGHT", 424);
+	//compute.setUniform1i("CHEIGHT", 1080);
+	//compute.setUniform1i("DWIDTH", 512);
+	//compute.setUniform1i("DHEIGHT", 424);
 	compute.dispatchCompute((512 * 424 + 8 - 1) / 8, 1, 1);
 	compute.end();
 
