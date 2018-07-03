@@ -24,7 +24,7 @@
 
 ## ビルド手順
 
-- $(OF_ROOT)\apps\myApps\<thisproject> となるように配置する
+- $(OF_ROOT)\apps\myApps\THIS_PROJECT となるように配置する
 - Kinect for Windows SDK はデフォルトの位置 (C:\Program Files\Microsoft SDKs\Kinect\v2.0_1409) にインストールされている物とする
   - もしそうで無い場合、VSのプロパティマネージャで、各構成(Debug/Release)とプラットフォーム(x64/Win32) の KinectSDK に関する部分を書き換える。具体的には、 `C/C++ > 全般 > 追加のインクルードディレクトリ` と `リンカー > 全般 > 追加のライブラリディレクトリ` を、Kinect SDK の位置になるよう修正する。
 - ビルドの構成を所望の物に変える。 (Debug/Release) (Win32/x64) の両方で動作確認済
@@ -43,4 +43,3 @@
 ## 既知の問題
 
 - カメラの初期位置が遠すぎる
-- Compute Shader での現地点(index) の取り方が謎。ネットの情報を鵜呑みにしてやっている。コメントアウトしている方の書き方にしても同じように描画される。
