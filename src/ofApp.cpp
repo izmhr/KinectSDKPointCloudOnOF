@@ -1,7 +1,13 @@
-#include "ofApp.h"
-
-// Kinectv2 PointCloud
+﻿// Kinectv2 PointCloud ← 余り参考にならなかった
 // https://homes.cs.washington.edu/~edzhang/tutorials/kinect2/kinect3.html
+
+// Compute Shader + VBO on OF ← 大変勉強になった。これがベース
+// https://github.com/openframeworks/openFrameworks/tree/master/examples/gl/computeShaderParticlesExample 
+
+// Kinect のデータを Compute Shader に渡す on Unity ← 大変勉強になった
+// https://github.com/sugi-cho/KinectStudy-Unity
+
+#include "ofApp.h"
 
 //--------------------------------------------------------------
 void ofApp::setup() {
@@ -119,8 +125,7 @@ void ofApp::gotMessage(ofMessage msg) {
 
 }
 
-void ofApp::exit()
-{
+void ofApp::exit() {
 	cout << "exit" << endl;
 	sensor->Close();
 	sensor->Release();
@@ -151,8 +156,7 @@ void ofApp::setupKinect() {
 	}
 }
 
-void ofApp::getDepthData(IMultiSourceFrame * frame)
-{
+void ofApp::getDepthData(IMultiSourceFrame * frame) {
 	IDepthFrame* depthFrame;
 	IDepthFrameReference* depthFrameRef = NULL;
 	frame->get_DepthFrameReference(&depthFrameRef);
@@ -213,26 +217,11 @@ void ofApp::getRgbData(IMultiSourceFrame* frame) {
 	colorBuffer.setData(colorData, GL_DYNAMIC_DRAW);
 
 	if (colorframe) colorframe->Release();
-
-	
 }
 
 void ofApp::getKinectData() {
 	IMultiSourceFrame* frame = NULL;
 	if (SUCCEEDED(reader->AcquireLatestFrame(&frame))) {
-		//GLubyte* ptr;
-		//glBindBuffer(GL_ARRAY_BUFFER, vboId);
-		//ptr = (GLubyte*)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-		//if (ptr) {
-			//getDepthData(frame, ptr);
-		//}
-		//glUnmapBuffer(GL_ARRAY_BUFFER);
-		//glBindBuffer(GL_ARRAY_BUFFER, cboId);
-		//ptr = (GLubyte*)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-		//if (ptr) {
-		//	getRgbData(frame, ptr);
-		//}
-		//glUnmapBuffer(GL_ARRAY_BUFFER);
 		getDepthData(frame);
 		getRgbData(frame);
 	}

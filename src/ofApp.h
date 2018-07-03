@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "ofMain.h"
 #include <Kinect.h>
@@ -30,37 +30,33 @@ public:
 	void exit();
 
 private:
+	ofEasyCam camera;
+
+	// KinectSDK
 	IKinectSensor * sensor;
 	ICoordinateMapper * mapper;
 	IMultiSourceFrameReader * reader;
 
-	// Intermediate Buffers
-	//unsigned char rgbimage[cColorWidth*cColorHeight * 4];    // Stores RGB color image
+	// cpu 層のバッファ
 	vector<ColorSpacePoint> colorSpacePoints;
 	vector<CameraSpacePoint> cameraSpacePoints;
 	vector<unsigned char> colorData;
 	vector<ofVec4f> colorResultData;
 
-	void setupKinect();
-	void getKinectData();
-	void getDepthData(IMultiSourceFrame* frame);
-	void getRgbData(IMultiSourceFrame* frame);
-
-	struct Particle {
-		ofVec3f pos;
-		ofVec4f color;
-	};
-
+	// for Compute Shader
 	ofShader compute;
-	vector<Particle> particles;
 	ofBufferObject colorSpacePointBuffer;
 	ofBufferObject cameraSpacePointBuffer;
 	ofBufferObject colorBuffer;
 	ofBufferObject colorResultBuffer;
+
+	// For VBO (rendering)
 	ofVbo vbo;
 
-	ofEasyCam camera;
-
+	void setupKinect();
+	void getKinectData();
+	void getDepthData(IMultiSourceFrame* frame);
+	void getRgbData(IMultiSourceFrame* frame);
 };
 
 // Safe release for interfaces
