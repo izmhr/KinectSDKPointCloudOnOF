@@ -49,12 +49,12 @@ void ofApp::update() {
 
 //--------------------------------------------------------------
 void ofApp::draw() {
-	getKinectData();
+	ofBackgroundGradient(ofColor(100), ofColor(0), OF_GRADIENT_LINEAR);
 
 	//ofEnableBlendMode(OF_BLENDMODE_ADD);
 	ofSetColor(255, 255);
 	camera.begin();
-	glPointSize(1);
+	glPointSize(2);
 	vbo.draw(GL_POINTS, 0, cDepthWidth * cDepthHeight);
 	camera.end();
 }
