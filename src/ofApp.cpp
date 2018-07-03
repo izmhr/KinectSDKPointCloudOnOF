@@ -38,7 +38,14 @@ void ofApp::update() {
 	//compute.setUniform1i("CHEIGHT", 1080);
 	//compute.setUniform1i("DWIDTH", 512);
 	//compute.setUniform1i("DHEIGHT", 424);
-	compute.dispatchCompute((512 * 424 + 8 - 1) / 8, 1, 1);
+
+	// (1) XYでThreadを構成する場合は、
+	// uint index = gl_WorkGroupSize.x * gl_NumWorkGroups.x * gl_GlobalInvocationID.y + gl_GlobalInvocationID.x; でできる
+	//compute.dispatchCompute(512 / 256, 424 / 4, 1);
+	// (2) XのみのThread構成の場合は、index = gl_GlobalInvocationID.x 「でも」できる。(xしかないから)
+	// そのままの計算式でももちろんイケる。
+	compute.dispatchCompute(512 * 424 / 1024, 1, 1); 
+	
 	compute.end();
 
 	std::stringstream strm;

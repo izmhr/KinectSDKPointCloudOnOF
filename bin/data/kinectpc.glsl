@@ -17,11 +17,15 @@ uniform int CWIDTH;
 //uniform int DWIDTH;
 //uniform int DHEIGHT;
 
-layout(local_size_x = 8, local_size_y = 1, local_size_z = 1) in;
+// (1) XY 2次元でスレッドを組む場合
+//layout(local_size_x = 256, local_size_y = 4, local_size_z = 1) in;
+// (2) X 1次元でスレッドを組む場合
+layout(local_size_x = 1024, local_size_y = 1, local_size_z = 1) in;
 void main() {
-	// index はいま全ループ(512x424…デプス画像のピクセル数)の内
-	// 何番目をやっているかを表す
+	// index はいま全ループ(512x424…デプス画像のピクセル数)の内何番目を処理しているかを表す。
+	// (1) 2軸で組む場合の Index へのアクセスの仕方。 (2) の場合も結局これで行ける。
 	uint index = gl_WorkGroupSize.x * gl_NumWorkGroups.x * gl_GlobalInvocationID.y + gl_GlobalInvocationID.x;
+	// (2) 1軸で組む場合はこのような index へのアクセス「も」可能。
 	//uint index = gl_GlobalInvocationID.x;
 
 	// colorSpace は、index番目のデプス画像が color 画像のどの位置を指すか
