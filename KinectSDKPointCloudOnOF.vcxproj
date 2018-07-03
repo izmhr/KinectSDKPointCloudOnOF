@@ -209,6 +209,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="bin\data\kinectpc.glsl" />
+    <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ProjectExtensions>
