@@ -70,9 +70,10 @@ void ofApp::update() {
 
 //--------------------------------------------------------------
 void ofApp::draw() {
-	ofBackgroundGradient(ofColor(100), ofColor(0), OF_GRADIENT_LINEAR);
+	//ofBackgroundGradient(ofColor(100), ofColor(0), OF_GRADIENT_LINEAR);
+	ofBackground(ofColor(193, 188, 182));	// チラチラが見えにくい背景
 
-	//ofEnableBlendMode(OF_BLENDMODE_ADD);
+	//ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	ofSetColor(255, 255);
 	camera.begin();
 	glPointSize(2);
@@ -80,7 +81,9 @@ void ofApp::draw() {
 	camera.end();
 
 	if (replaying) {
-		colorResultTextureStore[replayIndex].draw(0, 0, 512, 424);
+		if (debugging) {
+			colorResultTextureStore[replayIndex].draw(0, 0, 512, 424);
+		}
 		replayIndex++;
 		if (replayIndex == storageSize) {
 			replayIndex = 0;
@@ -98,6 +101,9 @@ void ofApp::keyPressed(int key) {
 void ofApp::keyReleased(int key) {
 	if (key == 'r') {
 		replaying = !replaying;
+	}
+	if (key == 'd') {
+		debugging = !debugging;
 	}
 }
 

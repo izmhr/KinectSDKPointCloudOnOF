@@ -46,6 +46,13 @@ void main() {
 	uint g = intcolor / 256;
 	uint r = intcolor - g * 256;
 
+	//if (183 <= r && r <= 196 && 181 <= g && g <= 191 && 169 <= b && b <= 185) {
+	//	colorResult[index].a = 0.0;
+	//}
+	//else {
+	//	colorResult[index].a = 1.0;
+	//}
+
 	// 0~255 で色が決まるので 255 で割る
 	colorResult[index].r = float(r) / 255.0;
 	colorResult[index].g = float(g) / 255.0;

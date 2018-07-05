@@ -53,6 +53,7 @@ private:
 	int storageSize = 3000;
 	int currentIndex = 0;
 	int replayIndex = 0;
+	bool debugging = false;
 	bool replaying = false;
 	ofTexture* colorResultTextureStore;
 	vector<CameraSpacePoint>* cameraSpacePointsStore;
