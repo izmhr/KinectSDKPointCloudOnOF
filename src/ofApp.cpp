@@ -14,6 +14,7 @@ void ofApp::setup() {
 	setupKinect();
 
 	setupComputeShader();
+	setupStorages();
 
 	vbo.setVertexBuffer(cameraSpacePointBuffer, 3, sizeof(CameraSpacePoint), 0);
 	vbo.setColorBuffer(colorResultBuffer, sizeof(ofVec4f), 0);
@@ -45,9 +46,22 @@ void ofApp::update() {
 	// (2) XのみのThread構成の場合は、index = gl_GlobalInvocationID.x 「でも」できる。(xしかないから)
 	// そのままの計算式でももちろんイケる。
 	compute.dispatchCompute(512 * 424 / 1024, 1, 1); 
-	
 	compute.end();
 
+	// Storage
+	colorResultTextureStore[currentIndex].loadData(colorResultBuffer, GL_RGBA, GL_FLOAT);
+	cameraSpacePointsStore[currentIndex] = cameraSpacePoints;
+	currentIndex++;
+	if (currentIndex == storageSize) currentIndex = 0;
+
+	// load past frame (color in CameraSpace)
+	if (replaying) {
+		ofFloatPixels pixels;
+		colorResultTextureStore[replayIndex].readToPixels(pixels);
+		colorResultBuffer.setData(pixels, GL_DYNAMIC_DRAW);
+	}
+
+	// Framerate
 	std::stringstream strm;
 	strm << "fps: " << ofGetFrameRate();
 	ofSetWindowTitle(strm.str());
@@ -64,6 +78,15 @@ void ofApp::draw() {
 	glPointSize(2);
 	vbo.draw(GL_POINTS, 0, cDepthWidth * cDepthHeight);
 	camera.end();
+
+	if (replaying) {
+		colorResultTextureStore[replayIndex].draw(0, 0, 512, 424);
+		replayIndex++;
+		if (replayIndex == storageSize) {
+			replayIndex = 0;
+		}
+	}
+	
 }
 
 //--------------------------------------------------------------
@@ -73,7 +96,9 @@ void ofApp::keyPressed(int key) {
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key) {
-
+	if (key == 'r') {
+		replaying = !replaying;
+	}
 }
 
 //--------------------------------------------------------------
@@ -156,6 +181,10 @@ void ofApp::setupComputeShader() {
 	colorData.resize(cColorWidth * cColorHeight * 4);
 	colorResultData.resize(cDepthWidth * cDepthHeight);
 
+	for (int i = 0; i < cDepthWidth * cDepthHeight; i++) {
+		colorResultData[i].set(0, 0, 1, 1);
+	}
+
 	colorSpacePointBuffer.allocate(colorSpacePoints, GL_DYNAMIC_DRAW);
 	cameraSpacePointBuffer.allocate(cameraSpacePoints, GL_DYNAMIC_DRAW);
 	colorBuffer.allocate(colorData, GL_DYNAMIC_DRAW);
@@ -164,6 +193,15 @@ void ofApp::setupComputeShader() {
 	colorSpacePointBuffer.bindBase(GL_SHADER_STORAGE_BUFFER, 0);
 	colorBuffer.bindBase(GL_SHADER_STORAGE_BUFFER, 1);
 	colorResultBuffer.bindBase(GL_SHADER_STORAGE_BUFFER, 2);
+}
+
+void ofApp::setupStorages() {
+	colorResultTextureStore = new ofTexture[storageSize];
+	cameraSpacePointsStore = new vector<CameraSpacePoint>[storageSize];
+	for (int i = 0; i < storageSize; i++) {
+		colorResultTextureStore[i].allocate(cDepthWidth, cDepthHeight, GL_RGBA);
+		cameraSpacePointsStore[i].resize(cDepthWidth * cDepthHeight);
+	}
 }
 
 void ofApp::getDepthData(IMultiSourceFrame * frame) {
@@ -182,7 +220,12 @@ void ofApp::getDepthData(IMultiSourceFrame * frame) {
 	mapper->MapDepthFrameToCameraSpace(cDepthWidth*cDepthHeight, buf, cDepthWidth*cDepthHeight, cameraSpacePoints.data());
 	mapper->MapDepthFrameToColorSpace(cDepthWidth*cDepthHeight, buf, cDepthWidth*cDepthHeight, colorSpacePoints.data());
 
-	cameraSpacePointBuffer.setData(cameraSpacePoints, GL_DYNAMIC_DRAW);
+	if (replaying) {
+		cameraSpacePointBuffer.setData(cameraSpacePointsStore[replayIndex], GL_DYNAMIC_DRAW);
+	} else {
+		cameraSpacePointBuffer.setData(cameraSpacePoints, GL_DYNAMIC_DRAW);
+	}
+	
 	colorSpacePointBuffer.setData(colorSpacePoints, GL_DYNAMIC_DRAW);
 
 	if (depthFrame) depthFrame->Release();

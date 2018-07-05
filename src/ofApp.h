@@ -50,11 +50,19 @@ private:
 	ofBufferObject colorBuffer;
 	ofBufferObject colorResultBuffer;
 
+	int storageSize = 3000;
+	int currentIndex = 0;
+	int replayIndex = 0;
+	bool replaying = false;
+	ofTexture* colorResultTextureStore;
+	vector<CameraSpacePoint>* cameraSpacePointsStore;
+
 	// For VBO (rendering)
 	ofVbo vbo;
 
 	void setupKinect();
 	void setupComputeShader();
+	void setupStorages();
 	void getKinectData();
 	void getDepthData(IMultiSourceFrame* frame);
 	void getRgbData(IMultiSourceFrame* frame);

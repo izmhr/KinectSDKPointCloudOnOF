@@ -50,6 +50,7 @@ void main() {
 	colorResult[index].r = float(r) / 255.0;
 	colorResult[index].g = float(g) / 255.0;
 	colorResult[index].b = float(b) / 255.0;
+
 	colorResult[index].a = 1.0;
 
 	// coloResult は VBO でも共有して利用される
